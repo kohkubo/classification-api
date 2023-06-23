@@ -1,14 +1,8 @@
 DATATIME=$(shell date "+%Y%m%d%H%M%S")
 
-.PHONY: livedoor-news-corpus-init
-livedoor-news-corpus-init	:
-	@echo "livedoorニュースコーパスのダウンロード"
-	wget https://www.rondhuit.com/download/ldcc-20140209.tar.gz
-	tar zxvf ldcc-20140209.tar.gz
-	rm ldcc-20140209.tar.gz
 
 .PHONY: setup
-setup	: train
+setup	: livedoor-news-corpus-init train
 	@echo "環境構築"
 	@echo "app/engineにモデルを配置"
 	cp -r news_model/ app/engine/
@@ -45,3 +39,12 @@ check-model-exit	:
 api-test	:
 	@echo "APIテスト"
 	curl -X POST -H "Content-Type: application/json" -d '{"title":"女性を潤す新たな注目ワードは“アミノ酸”"}' http://localhost:8000/v1/classify_news_type/
+
+.PHONY: livedoor-news-corpus-init
+livedoor-news-corpus-init	:
+	@echo "livedoorニュースコーパスのダウンロード"
+	wget https://www.rondhuit.com/download/ldcc-20140209.tar.gz
+	tar zxvf ldcc-20140209.tar.gz
+	rm ldcc-20140209.tar.gz
+	@echo "livedoorニュースコーパスの整形"
+	cd dataset && python livedoor.py
