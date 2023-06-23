@@ -4,7 +4,7 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 LABELS = [
     "dokujo",
     "it",
-    "sports-",
+    "sports",
     "kaden",
     "homme",
     "movie",
