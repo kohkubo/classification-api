@@ -165,8 +165,10 @@ cython_debug/
 *.png
 
 text/*
-!text/news_model/
 
 train/classification/
 
 .vscode/
+
+**/news_model/
+*.bin
