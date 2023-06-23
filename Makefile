@@ -7,11 +7,6 @@ livedoor-news-corpus-init	:
 	tar zxvf ldcc-20140209.tar.gz
 	rm ldcc-20140209.tar.gz
 
-.PHONY: huggingface-datasets
-huggingface-datasets	:
-	@echo "huggingface/datasetsのインストール"
-	python huggingface-datasets-install.py
-
 .PHONY: run
 run	:
 	@echo "fastapi起動"
