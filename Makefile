@@ -7,6 +7,12 @@ livedoor-news-corpus-init	:
 	tar zxvf ldcc-20140209.tar.gz
 	rm ldcc-20140209.tar.gz
 
+.PHONY: setup
+setup	: train
+	@echo "環境構築"
+	@echo "app/engineにモデルを配置"
+	cp -r news_model/ app/engine/
+
 .PHONY: run
 run	:
 	@echo "fastapi起動"
@@ -15,17 +21,25 @@ run	:
 .PHONY: train
 train	:
 	@echo "学習"
-	cd train && python train.py > logs/train_$(DATATIME).log
+	cd train && python train.py > ../logs/train_$(DATATIME).log
 
 .PHONY: predict
-predict	:
+predict	: check-model-exit
 	@echo "予測"
-	cd train && python predict.py > logs/predict_$(DATATIME).log
+	cd train && python predict.py > ../logs/predict_$(DATATIME).log
 
 .PHONY: eval
-eval	:
+eval	: check-model-exit
 	@echo "評価"
 	cd train && python eval.py
+
+.PHONY: check-model-exit
+check-model-exit	:
+	@echo "モデルの存在確認"
+	@if [ ! -d news_model ]; then \
+		echo "モデルが存在しません。make trainで学習を実行してください。"; \
+		exit 1; \
+	fi
 
 .PHONY: api-test
 api-test	:
