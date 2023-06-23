@@ -26,3 +26,8 @@ predict	:
 eval	:
 	@echo "評価"
 	cd train && python eval.py
+
+.PHONY: api-test
+api-test	:
+	@echo "APIテスト"
+	curl -X POST -H "Content-Type: application/json" -d '{"title":"女性を潤す新たな注目ワードは“アミノ酸”"}' http://localhost:8000/v1/classify_news_type/
