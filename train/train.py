@@ -9,7 +9,12 @@ import numpy as np
 import pandas as pd
 from datasets import DatasetDict
 from sklearn.metrics import classification_report
-from config import LABELS, MODEL_PATH, g_model, g_tokenizer
+from config import (
+    LABELS,
+    MODEL_PATH,
+    g_tokenizer,
+    g_model,
+)
 
 # %%
 # 訓練データと検証データを読み込む
