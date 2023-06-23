@@ -10,7 +10,7 @@ livedoor-news-corpus-init	:
 .PHONY: run
 run	:
 	@echo "fastapi起動"
-	uvicorn src.main:app --reload
+	cd app && uvicorn main:app --reload
 
 .PHONY: train
 train	:
