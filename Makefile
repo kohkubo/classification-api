@@ -1,5 +1,5 @@
+include .env
 DATATIME=$(shell date "+%Y%m%d%H%M%S")
-
 
 .PHONY: setup
 setup	: livedoor-news-corpus-init train
@@ -35,10 +35,12 @@ check-model-exit	:
 		exit 1; \
 	fi
 
-.PHONY: api-test
+.PHONY: local-test
 api-test	:
 	@echo "APIテスト"
-	curl -X POST -H "Content-Type: application/json" -d '{"title":"女性を潤す新たな注目ワードは“アミノ酸”"}' http://localhost:8000/v1/classify_news_type/
+	curl -X GET http://localhost:3000/
+	echo ""
+	curl -X POST -H "Content-Type: application/json" -d '{"title":"女性を潤す新たな注目ワードは“アミノ酸”"}' http://localhost:3000/v1/news/classify-type/
 
 .PHONY: livedoor-news-corpus-init
 livedoor-news-corpus-init	:
@@ -48,3 +50,14 @@ livedoor-news-corpus-init	:
 	rm ldcc-20140209.tar.gz
 	@echo "livedoorニュースコーパスの整形"
 	cd dataset && python livedoor.py
+
+
+.PHONY: test-get
+test-get	:
+	@echo "get テスト"
+	curl -X GET $(LAMBDA_URL)
+
+.PHONY: test-post
+test-post	:
+	@echo "post テスト"
+	curl -X POST -H "Content-Type: application/json" -d '{"title":"女性を潤す新たな注目ワードは“アミノ酸”"}' $(LAMBDA_URL)/v1/news/classify-type/
