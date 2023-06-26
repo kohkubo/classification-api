@@ -1,6 +1,10 @@
 from fastapi import FastAPI, HTTPException
+from mangum import Mangum
 from engine.predict import classify_news
 from pydantic import BaseModel
+import os
+
+app = FastAPI()
 
 
 class News(BaseModel):
@@ -14,23 +18,28 @@ class News(BaseModel):
         }
 
 
-app = FastAPI()
-
-
-@app.get("/")
+@app.get("/", status_code=200)
 async def root():
     return {"message": "Hello World"}
 
 
-@app.post("/v1/classify_news_type/")
+@app.post("/v1/news/classify-type/")
 async def classify_news_type(news: News):
+    # try:
+    #     return test(news.title)
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail=str(e))
+
     try:
         predict = classify_news(news.title)
+        return {
+            "label": predict[0],
+            "label_name": predict[1],
+            "score": float(predict[3]),
+            "prediction_scores": predict[2],
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    return {
-        "label": predict[0],
-        "label_name": predict[1],
-        "score": float(predict[3]),
-        "prediction_scores": predict[2],
-    }
+
+
+lambda_handler = Mangum(app)

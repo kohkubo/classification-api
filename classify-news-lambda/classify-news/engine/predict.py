@@ -1,5 +1,8 @@
 import torch
 import numpy as np
+import os
+
+os.environ["TRANSFORMERS_CACHE"] = "/tmp"
 
 from engine.config import (
     LABELS,
@@ -45,3 +48,7 @@ def classify_news(sentence):
         predict,
         np.max(prediction_np),
     )
+
+
+def test(context: str = None):
+    return context + "test"
