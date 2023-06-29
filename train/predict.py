@@ -1,15 +1,16 @@
 import torch
 import pandas as pd
 import numpy as np
-
 from config import (
     LABELS,
     TEST_PATH,
     TEST_RESULT_PATH,
-    g_model,
-    g_tokenizer,
-    g_device,
 )
+from model import get_model, get_tokenizer, get_device
+
+device = get_device()
+model = get_model(device)
+tokenizer = get_tokenizer()
 
 # テストデータを読み込む
 test_df = pd.read_csv(TEST_PATH, encoding="UTF-8")
@@ -26,12 +27,12 @@ def predict_label(sentence):
         tuple: ラベル番号、ラベル名、予測確率の配列、最大予測確率
     """
     # 文章をトークン化し、PyTorchのテンソルに変換する
-    inputs = g_tokenizer(sentence, return_tensors="pt")
+    inputs = tokenizer(sentence, return_tensors="pt")
 
     # テンソルをモデルに入力し、予測を行う
     with torch.no_grad():
-        outputs = g_model(
-            inputs["input_ids"].to(g_device), inputs["attention_mask"].to(g_device)
+        outputs = model(
+            inputs["input_ids"].to(device), inputs["attention_mask"].to(device)
         )
 
         # 予測結果をソフトマックス関数で正規化する
@@ -69,4 +70,5 @@ for sentence in test_df["sentence"]:
     df = pd.concat([df, new_row], ignore_index=True)
 
 # 予測結果を保存する
+print(f"save result to {TEST_RESULT_PATH}")
 df.to_csv(TEST_RESULT_PATH, encoding="UTF-8", index=False)

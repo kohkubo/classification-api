@@ -12,9 +12,12 @@ from sklearn.metrics import classification_report
 from config import (
     LABELS,
     MODEL_PATH,
-    g_tokenizer,
-    g_model,
 )
+from model import get_device, get_model, get_tokenizer
+
+device = get_device()
+model = get_model(device)
+tokenizer = get_tokenizer()
 
 # %%
 # 訓練データと検証データを読み込む
@@ -37,7 +40,7 @@ dataset = DatasetDict(
 # %%
 # トークナイザ処理
 def tokenize(batch):
-    return g_tokenizer(batch["sentence"], padding=True, truncation=True)
+    return tokenizer(batch["sentence"], padding=True, truncation=True)
 
 
 # Datasetオブジェクトをトークナイズする
@@ -76,12 +79,12 @@ training_args = TrainingArguments(
 # %%
 # 学習
 trainer = Trainer(
-    model=g_model,
+    model=model,
     args=training_args,
     compute_metrics=compute_metrics,
     train_dataset=dataset_encoded["train"],
     eval_dataset=dataset_encoded["validation"],
-    tokenizer=g_tokenizer,
+    tokenizer=tokenizer,
 )
 
 trainer.train()
