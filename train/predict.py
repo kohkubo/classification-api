@@ -7,13 +7,9 @@ from config import (
     TEST_RESULT_PATH,
 )
 from model import get_model, get_tokenizer, get_device
-
 device = get_device()
 model = get_model(device)
 tokenizer = get_tokenizer()
-
-# テストデータを読み込む
-test_df = pd.read_csv(TEST_PATH, encoding="UTF-8")
 
 
 def predict_label(sentence):
@@ -53,22 +49,31 @@ def predict_label(sentence):
     )
 
 
-# テストデータの各文章に対して予測を行い、結果をDataFrameに保存する
-# この処理はバッチ処理で高速化可能だが、今回はfor文で処理している
-df = pd.DataFrame(columns=["label", "label_name", "pred", "sentence"])
-for sentence in test_df["sentence"]:
-    label, label_name, prediction, max_prob = predict_label(sentence)
-    new_row = pd.DataFrame(
-        {
-            "label": [label],
-            "label_name": [label_name],
-            "pred": [max_prob],
-            "sentence": [sentence],
-        }
-    )
+def predict_dataset(test_df):
+    """
+    テストデータの各文章に対して予測を行い、結果をDataFrameに保存する
+    この処理はバッチ処理で高速化可能だが、今回はfor文で処理している
+    """
+    df = pd.DataFrame(columns=["label", "label_name", "pred", "sentence"])
+    for sentence in test_df["sentence"]:
+        label, label_name, prediction, max_prob = predict_label(sentence)
+        new_row = pd.DataFrame(
+            {
+                "label": [label],
+                "label_name": [label_name],
+                "pred": [max_prob],
+                "sentence": [sentence],
+            }
+        )
 
-    df = pd.concat([df, new_row], ignore_index=True)
+        df = pd.concat([df, new_row], ignore_index=True)
 
-# 予測結果を保存する
-print(f"save result to {TEST_RESULT_PATH}")
-df.to_csv(TEST_RESULT_PATH, encoding="UTF-8", index=False)
+    # 予測結果を保存する
+    print(f"save result to {TEST_RESULT_PATH}")
+    df.to_csv(TEST_RESULT_PATH, encoding="UTF-8", index=False)
+
+
+if __name__ == "__main__":
+    # テストデータを読み込む
+    test_df = pd.read_csv(TEST_PATH, encoding="UTF-8")
+    predict_dataset(test_df)
