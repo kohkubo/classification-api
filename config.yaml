@@ -1,0 +1,15 @@
+# config.yaml
+labels:
+  - dokujo
+  - it
+  - sports
+  - kaden
+  - homme
+  - movie
+  - peachy
+  - smax
+  - topic-news
+model_path: "../news_model"
+test_path: "../text/news_test.csv"
+test_result_path: "../text/news_test_result.csv"
+pretrained_model_name: "cl-tohoku/bert-base-japanese-whole-word-masking"

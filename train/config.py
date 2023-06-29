@@ -1,22 +1,16 @@
 import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
+import yaml
 
-LABELS = [
-    "dokujo",
-    "it",
-    "sports",
-    "kaden",
-    "homme",
-    "movie",
-    "peachy",
-    "smax",
-    "topic-news",
-]
+# YAMLファイルから設定を読み込む
+with open("../config.yaml", "r") as f:
+    config = yaml.safe_load(f)
 
-MODEL_PATH = "../news_model"
-TEST_PATH = "../text/news_test.csv"
-TEST_RESULT_PATH = "../text/news_test_result.csv"
-PRETRAINED_MODEL_NAME = "cl-tohoku/bert-base-japanese-whole-word-masking"
+LABELS = config["labels"]
+MODEL_PATH = config["model_path"]
+TEST_PATH = config["test_path"]
+TEST_RESULT_PATH = config["test_result_path"]
+PRETRAINED_MODEL_NAME = config["pretrained_model_name"]
 
 
 def get_model(device):
