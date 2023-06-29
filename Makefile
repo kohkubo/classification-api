@@ -36,7 +36,7 @@ check-model-exit	:
 	fi
 
 .PHONY: local-test
-api-test	:
+local-test	:
 	@echo "APIテスト"
 	curl -X GET http://localhost:3000/
 	echo ""
