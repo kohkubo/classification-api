@@ -1,7 +1,7 @@
 import yaml
 
 # YAMLファイルから設定を読み込む
-with open("train/config.yaml", "r") as f:
+with open("config.yaml", "r") as f:
     config = yaml.safe_load(f)
 
 LABELS = config["labels"]
