@@ -1,5 +1,3 @@
-import torch
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
 import yaml
 
 # YAMLファイルから設定を読み込む
