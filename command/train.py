@@ -14,15 +14,15 @@ from config import (
 from model import get_device, get_model, get_tokenizer
 
 
-def train():
+def train(train_file="../text/news_train.csv", val_file="../text/news_val.csv"):
     device = get_device()
     model = get_model(device)
     tokenizer = get_tokenizer()
 
     # %%
     # 訓練データと検証データを読み込む
-    train_df = pd.read_csv("text/news_train.csv", encoding="UTF-8")
-    validation_df = pd.read_csv("text/news_val.csv", encoding="UTF-8")
+    train_df = pd.read_csv(train_file, encoding="UTF-8")
+    validation_df = pd.read_csv(val_file, encoding="UTF-8")
 
     # pandas DataFrameからDatasetオブジェクトを作成する
     train_dataset = Dataset.from_pandas(train_df)
