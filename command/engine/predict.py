@@ -3,10 +3,9 @@ import pandas as pd
 import numpy as np
 from config import (
     LABELS,
-    TEST_PATH,
     TEST_RESULT_PATH,
 )
-from model import get_model, get_tokenizer, get_device
+from model.model import get_model, get_tokenizer, get_device
 
 
 def predict_label(sentence, model, tokenizer, device):
@@ -72,11 +71,15 @@ def predict_dataset(test_df, model, tokenizer, device):
     df.to_csv(TEST_RESULT_PATH, encoding="UTF-8", index=False)
 
 
-if __name__ == "__main__":
+def main(test_path):
     device = get_device()
-    model = get_model(device)
+    model = get_model(device, model_path="../news_model")
     tokenizer = get_tokenizer()
     # テストデータを読み込む
-    test_df = pd.read_csv(TEST_PATH, encoding="UTF-8")
+    test_df = pd.read_csv(test_path, encoding="UTF-8")
 
     predict_dataset(test_df, model, tokenizer, device)
+
+
+if __name__ == "__main__":
+    main()

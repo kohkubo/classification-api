@@ -7,7 +7,7 @@ def get_device():
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def get_model(device):
+def get_model(device, model_path=MODEL_PATH):
     """
     モデルを取得する関数
     初回train時にはローカルにモデルが存在しないため、huggingfaceからモデルを取得する

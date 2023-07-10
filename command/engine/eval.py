@@ -2,16 +2,12 @@ from sklearn.metrics import classification_report
 
 import pandas as pd
 
-from config import (
-    LABELS,
-    TEST_PATH,
-    TEST_RESULT_PATH,
-)
+from config import LABELS
 
 
-def eval():
-    test_df = pd.read_csv(TEST_PATH, encoding="UTF-8")
-    test_result_df = pd.read_csv(TEST_RESULT_PATH, encoding="UTF-8")
+def eval(test_path, test_result_path):
+    test_df = pd.read_csv(test_path, encoding="UTF-8")
+    test_result_df = pd.read_csv(test_result_path, encoding="UTF-8")
 
     # テストデータの正解ラベルと予測ラベルを用いて混同行列をプロットする
     y_true = []

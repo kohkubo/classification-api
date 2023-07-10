@@ -7,16 +7,13 @@ import numpy as np
 import pandas as pd
 from datasets import DatasetDict
 from sklearn.metrics import classification_report
-from config import (
-    LABELS,
-    MODEL_PATH,
-)
-from model import get_device, get_model, get_tokenizer
+from config import LABELS
+from model.model import get_device, get_model, get_tokenizer
 
 
-def train(train_file="../text/news_train.csv", val_file="../text/news_val.csv"):
+def train(train_file, val_file, output_dir):
     device = get_device()
-    model = get_model(device)
+    model = get_model(device, model_path="cl-tohoku/bert-base-japanese-whole-word-masking")
     tokenizer = get_tokenizer()
 
     # %%
@@ -105,4 +102,4 @@ def train(train_file="../text/news_train.csv", val_file="../text/news_val.csv"):
 
     # %%
     # モデルを保存する
-    trainer.save_model(MODEL_PATH)
+    trainer.save_model(output_dir)

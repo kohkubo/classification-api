@@ -1,11 +1,12 @@
 import yaml
 
+CONFIG = None
+
 # YAMLファイルから設定を読み込む
 with open("config.yaml", "r") as f:
-    config = yaml.safe_load(f)
+    CONFIG = yaml.safe_load(f)
 
-LABELS = config["labels"]
-MODEL_PATH = config["model_path"]
-TEST_PATH = config["test_path"]
-TEST_RESULT_PATH = config["test_result_path"]
-PRETRAINED_MODEL_NAME = config["pretrained_model_name"]
+LABELS = CONFIG["labels"]
+MODEL_PATH = CONFIG["model_path"]
+TEST_RESULT_PATH = CONFIG["test_result_path"]
+PRETRAINED_MODEL_NAME = CONFIG["pretrained_model_name"]
