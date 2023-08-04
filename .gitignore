@@ -166,7 +166,7 @@ cython_debug/
 
 text/*
 
-train/classification/
+**/classification/
 
 .vscode/
 

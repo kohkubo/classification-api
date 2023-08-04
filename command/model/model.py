@@ -1,25 +1,13 @@
 import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
-
-LABELS = [
-    "dokujo",
-    "it",
-    "sports",
-    "kaden",
-    "homme",
-    "movie",
-    "peachy",
-    "smax",
-    "topic-news",
-]
-
-MODEL_PATH = "../news_model"
-TEST_PATH = "../text/news_test.csv"
-TEST_RESULT_PATH = "../text/news_test_result.csv"
-PRETRAINED_MODEL_NAME = "cl-tohoku/bert-base-japanese-whole-word-masking"
+from config import LABELS, MODEL_PATH, PRETRAINED_MODEL_NAME
 
 
-def get_model(device):
+def get_device():
+    return torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
+def get_model(device, model_path=MODEL_PATH):
     """
     モデルを取得する関数
     初回train時にはローカルにモデルが存在しないため、huggingfaceからモデルを取得する
@@ -36,7 +24,5 @@ def get_model(device):
         ).to(device)
 
 
-# g_ はグローバル変数
-g_device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-g_model = get_model(g_device)
-g_tokenizer = AutoTokenizer.from_pretrained(PRETRAINED_MODEL_NAME, use_fast=True)
+def get_tokenizer():
+    return AutoTokenizer.from_pretrained(PRETRAINED_MODEL_NAME, use_fast=True)
